@@ -1,0 +1,10 @@
+﻿  Source.cpp
+h:\desktop\assignment(1)\assignment\terrain\terrain\src\source.cpp(89): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+h:\desktop\assignment(1)\assignment\terrain\terrain\src\source.cpp(156): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+h:\desktop\assignment(1)\assignment\terrain\terrain\src\source.cpp(157): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+h:\desktop\assignment(1)\assignment\terrain\terrain\src\source.cpp(161): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+h:\desktop\assignment(1)\assignment\terrain\terrain\src\source.cpp(162): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+h:\desktop\assignment(1)\assignment\terrain\terrain\src\source.cpp(164): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+h:\desktop\assignment(1)\assignment\terrain\terrain\src\source.cpp(165): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+h:\desktop\assignment(1)\assignment\terrain\terrain\src\source.cpp(178): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Terrain.vcxproj -> H:\Desktop\Assignment(1)\Assignment\Terrain\Debug\Terrain.exe
