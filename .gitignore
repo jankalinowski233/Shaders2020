@@ -1,11 +1,4 @@
 # Directories
-.vs/
-bin/
-build/
-
-# Files
-*.user
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
-*.sln
+Terrain/.vs/
+Terrain/bin/
+Terrain/build/
