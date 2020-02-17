@@ -74,8 +74,8 @@ int main()
 	glCullFace(GL_BACK);
 
 	// simple vertex and fragment shader - add your own tess and geo shader
-	Shader shader("..\\shaders\\tessVert.vs", "..\\shaders\\plainFrag.fs", "..\\shaders\\Norms.gs",
-		"..\\shaders\\tessControlShader.tcs", "..\\shaders\\tessEvaluationShader.tes");
+	Shader shader("..\\shaders\\PNVert.vs", "..\\shaders\\phongFrag.fs", "..\\shaders\\Norms.gs",
+		"..\\shaders\\PNTessControl.tcs", "..\\shaders\\PNTessEval.tes");
 
 
 	//Terrain Constructor ; number of grids in width, number of grids in height, gridSize
@@ -109,10 +109,23 @@ int main()
 		shader.setFloat("lambda", 0.0105f);
 		shader.setFloat("alpha", 15.0f);
 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//light properties
+		shader.setVec3("dirLight.direction", dirLightPos);
+		shader.setVec3("dirLight.ambient", 0.9f, 0.9f, 0.9f);
+		shader.setVec3("dirLight.diffuse", 0.75f, 0.75f, 0.75f);
+		shader.setVec3("dirLight.specular", 0.8f, 0.8f, 0.8f);
+		//material properties
+		shader.setVec3("mat.ambient", 0.5, 0.587, 0.517);
+		shader.setVec3("mat.diffuse", 0.596, 0.941, 0.891);
+		shader.setVec3("mat.specular", 0.497f, 0.508f, 0.506f);
+		shader.setFloat("mat.shininess", 0.9f);
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		glDrawArrays(GL_PATCHES, 0, vertices.size() / 3);
-		if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) 
-		  camera.printCameraCoords();
+		if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+			camera.printCameraCoords();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -227,11 +240,15 @@ void setVAO(vector <float> vertices) {
 	glBufferData(GL_ARRAY_BUFFER, (vertices.size() * sizeof(GLfloat)), vertices.data(), GL_STATIC_DRAW);
 
 	//xyz
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	//texture
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	//texture
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 	
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

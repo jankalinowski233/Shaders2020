@@ -73,9 +73,12 @@ void Terrain::makeVertex(int x, int y, std::vector<float> *vertices) {
 	vertices->push_back(0.0f); //yPos - always 0 for now. Going to calculate this on GPU - can change to calclaue it here.
 	vertices->push_back((float)y); //zPos
 
-   // add texture coords
+	// normals
+	vertices->push_back((float)x);
+	vertices->push_back((float)y);
+	vertices->push_back((float)y);
+
+	// add texture coords
 	vertices->push_back((float)x / (width*stepSize));
 	vertices->push_back((float)y / (height*stepSize));
-
-
 }

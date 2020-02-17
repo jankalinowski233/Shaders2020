@@ -3,7 +3,7 @@ layout(triangles) in ;
 layout(triangle_strip, max_vertices = 3) out ;
 vec3 getNormal() ;
 
-in vec3 fragPos[] ;
+in vec3 WorldPos_FS_in[] ;
 in vec3 normals[] ;
 
 out vec3 gNormals ;
@@ -16,7 +16,7 @@ void main()
    for(int i = 0 ; i < 3; i++)
    {
       gl_Position = gl_in[i].gl_Position ;
-      gWorldPos_FS_in = fragPos[i] ;
+      gWorldPos_FS_in = WorldPos_FS_in[i] ;
       gNormals = getNormal() ;    
       EmitVertex() ;
   }
