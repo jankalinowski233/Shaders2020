@@ -43,10 +43,10 @@ void main()
    // calculate normals
    float x = tessLevel[0] / step;
 
-   float right = (textureOffset(heightTexture, tessTex, ivec2(x, 0)).r) * scale;
-   float left = (textureOffset(heightTexture, tessTex, ivec2(-x, 0)).r) * scale;
-   float up = (textureOffset(heightTexture, tessTex, ivec2(0, x)).r) * scale;
-   float down = (textureOffset(heightTexture, tessTex, ivec2(0, -x)).r) * scale;
+   float right = (textureOffset(heightTexture, tessTex, ivec2(x, 0)).r) * scale / 2.0f;
+   float left = (textureOffset(heightTexture, tessTex, ivec2(-x, 0)).r) * scale / 2.0f;
+   float up = (textureOffset(heightTexture, tessTex, ivec2(0, x)).r) * scale / 2.0f;
+   float down = (textureOffset(heightTexture, tessTex, ivec2(0, -x)).r) * scale / 2.0f;
 
    vec3 toNormalize = vec3((left-right), 2.0f, (up-down));
    teNormal = normalize(toNormalize);

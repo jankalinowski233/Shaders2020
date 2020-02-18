@@ -26,27 +26,26 @@ uniform vec3 viewPos ;
 
 
 void main()
-{   
-    vec3 col = vec3(0.6,0.1,0.2) ;
-  
-     vec3 viewDir = normalize(viewPos - gWorldPos_FS_in);
-	 vec3 norm = normalize(gTeNormal) ;
-	 vec3 ambient = dirLight.ambient * mat.ambient;     
-     vec3 lightDir = normalize(-dirLight.direction);
-    // diffuse shading
-    float diff = max(dot(norm, dirLight.direction), 0.0);
-    // specular shading
-    vec3 reflectDir = reflect(-dirLight.direction, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), mat.shininess);
-    // combine results
-   
-    vec3 diffuse  = dirLight.diffuse  * (diff * mat.diffuse);
-    vec3 specular = dirLight.specular * (spec * mat.specular);
-    FragColor = vec4((ambient + diffuse + specular),1.0f);
-//  FragColor = vec4((ambient+diffuse),1.0f) ;
- //FragColor =  texture(texture1, TexCoords);
-//FragColor = vec4(gNormals,1.0f) ;
+{       
+    // ambient
+    vec3 ambient = dirLight.ambient * mat.ambient;
+  	
+    // diffuse 
+    vec3 norm = normalize(gTeNormal); //normalize vertices' normals length
+    vec3 lightDir = normalize(dirLight.direction - gWorldPos_FS_in); //calculate light pos
 
-	
+    float diff = max(dot(lightDir, norm), 0.0f); //calculate diffuse factor
+    vec3 diffuse  = dirLight.diffuse  * (diff * mat.diffuse);
+    
+    // specular
+    vec3 viewDir = normalize(viewPos - gWorldPos_FS_in);  //normalize camera direction
+	vec3 halfway = normalize(lightDir + viewDir); //halfway vector between camera position and the light source
+
+    float spec = pow(max(dot(norm, halfway), 0.0),  mat.shininess); //calculate specular factor
+    vec3 specular = dirLight.specular * (spec * mat.specular);
+
+    vec3 result = ambient + diffuse + specular;
+    FragColor = vec4(result, 1.0); //final result --> light + texture
+
 }
 

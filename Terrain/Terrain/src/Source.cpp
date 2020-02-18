@@ -115,21 +115,21 @@ int main()
 
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("eyePos", camera.Position);
-		shader.setFloat("lambda", 0.0035f);
-		shader.setFloat("alpha", 40.0f);
+		shader.setFloat("lambda", 0.0055f);
+		shader.setFloat("alpha", 55.0f);
 		shader.setFloat("scale", 50.0f);
 		shader.setFloat("step", terrain.getStepSize());
 
 		//light properties
 		shader.setVec3("dirLight.direction", dirLightPos);
-		shader.setVec3("dirLight.ambient", 0.1f, 0.3f, 0.1f);
-		shader.setVec3("dirLight.diffuse", 0.15f, 0.35f, 0.15f);
-		shader.setVec3("dirLight.specular", 0.2f, 0.3f, 0.2f);
+		shader.setVec3("dirLight.ambient", 0.4f, 0.7f, 0.4f);
+		shader.setVec3("dirLight.diffuse", 0.35f, 0.55f, 0.35f);
+		shader.setVec3("dirLight.specular", 0.4f, 0.5f, 0.4f);
 		//material properties
 		shader.setVec3("mat.ambient", 0.2, 0.387, 0.217);
 		shader.setVec3("mat.diffuse", 0.196, 0.241, 0.291);
 		shader.setVec3("mat.specular", 0.097f, 0.308f, 0.106f);
-		shader.setFloat("mat.shininess", 0.0001f);
+		shader.setFloat("mat.shininess", 0.1f);
 
 		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && !pressed)
 		{

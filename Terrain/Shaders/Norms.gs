@@ -1,6 +1,7 @@
 #version 330 core
 layout(triangles) in ;
 layout(triangle_strip, max_vertices = 3) out ;
+
 vec3 getNormal() ;
 
 in vec3 WorldPos_FS_in[] ;
@@ -20,8 +21,8 @@ void main()
       gl_Position = gl_in[i].gl_Position ;
       gWorldPos_FS_in = WorldPos_FS_in[i] ;
       //gNormals = getNormal(); --> surface normal
-	  gTeNormal = teNormal[i];
 	  TexCoords = tessTex[i];
+	  gTeNormal = teNormal[i];
       EmitVertex() ;
   }
      EndPrimitive() ;

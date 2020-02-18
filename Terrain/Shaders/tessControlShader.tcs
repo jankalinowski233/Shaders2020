@@ -26,7 +26,7 @@ float GetTessellationLevel(float dist1, float dist2)
 	float actualTessLevel = 0.0f;
 
 	float exponent = -lambda * avgDist;
-	actualTessLevel = round(exp(exponent) * alpha);
+	actualTessLevel = exp(exponent) * alpha;
 
 	if(actualTessLevel < 1.0f)
 		return 1.0f;
