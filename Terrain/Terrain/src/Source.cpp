@@ -115,7 +115,7 @@ int main()
 
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("eyePos", camera.Position);
-		shader.setFloat("lambda", 0.0055f);
+		shader.setFloat("lambda", 0.0055f); // Need help tweaking ???
 		shader.setFloat("alpha", 55.0f);
 		shader.setFloat("scale", 50.0f);
 		shader.setFloat("step", terrain.getStepSize());
