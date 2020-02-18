@@ -22,7 +22,7 @@
 // settings
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 900;
-glm::vec3 dirLightPos(0.0f, 2.0f, 2.0f);
+glm::vec3 dirLightPos(0.0f, 3.0f, -5.0f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -79,16 +79,16 @@ int main()
 
 
 	//Terrain Constructor ; number of grids in width, number of grids in height, gridSize
-	Terrain terrain(50, 50,10);
+	Terrain terrain(50, 50, 10);
 	std::vector<float> vertices= terrain.getVertices();
 	setVAO(vertices);
 	bool wireframeMode = true;
 	bool pressed = false;
 
-	unsigned int heightMap = loadTexture("../resources/height2.jpg");
+	unsigned int heightMap = loadTexture("../resources/heightMap.png");
+	shader.use();
 	shader.setInt("heightTexture", heightMap);
-	glBindTexture(GL_TEXTURE_2D, heightMap);
-	glActiveTexture(GL_TEXTURE1);
+
 	while (!glfwWindowShouldClose(window))
 	{
 
@@ -101,7 +101,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glBindVertexArray(VAO);
-
+		glBindTexture(GL_TEXTURE_2D, heightMap);
+		glActiveTexture(GL_TEXTURE1);
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1200.0f);
 		glm::mat4 view = camera.GetViewMatrix();
@@ -115,19 +116,20 @@ int main()
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("eyePos", camera.Position);
 		shader.setFloat("lambda", 0.0035f);
-		shader.setFloat("alpha", 15.0f);
+		shader.setFloat("alpha", 40.0f);
 		shader.setFloat("scale", 50.0f);
+		shader.setFloat("step", terrain.getStepSize());
 
 		//light properties
 		shader.setVec3("dirLight.direction", dirLightPos);
-		shader.setVec3("dirLight.ambient", 0.5f, 0.5f, 0.5f);
-		shader.setVec3("dirLight.diffuse", 0.45f, 0.45f, 0.45f);
-		shader.setVec3("dirLight.specular", 0.6f, 0.6f, 0.6f);
+		shader.setVec3("dirLight.ambient", 0.1f, 0.3f, 0.1f);
+		shader.setVec3("dirLight.diffuse", 0.15f, 0.35f, 0.15f);
+		shader.setVec3("dirLight.specular", 0.2f, 0.3f, 0.2f);
 		//material properties
-		shader.setVec3("mat.ambient", 0.5, 0.887, 0.517);
-		shader.setVec3("mat.diffuse", 0.396, 0.741, 0.691);
-		shader.setVec3("mat.specular", 0.297f, 0.808f, 0.306f);
-		shader.setFloat("mat.shininess", 0.9f);
+		shader.setVec3("mat.ambient", 0.2, 0.387, 0.217);
+		shader.setVec3("mat.diffuse", 0.196, 0.241, 0.291);
+		shader.setVec3("mat.specular", 0.097f, 0.308f, 0.106f);
+		shader.setFloat("mat.shininess", 0.0001f);
 
 		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && !pressed)
 		{

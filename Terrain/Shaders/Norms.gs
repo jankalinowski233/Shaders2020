@@ -4,9 +4,11 @@ layout(triangle_strip, max_vertices = 3) out ;
 vec3 getNormal() ;
 
 in vec3 WorldPos_FS_in[] ;
+in vec3 teNormal[];
 in vec2 tessTex[];
 
-out vec3 gNormals ;
+out vec3 gTeNormal;
+//out vec3 gNormals ; --> Surface normal
 out vec3 gWorldPos_FS_in ;
 out vec2 TexCoords;
 
@@ -17,7 +19,8 @@ void main()
    {
       gl_Position = gl_in[i].gl_Position ;
       gWorldPos_FS_in = WorldPos_FS_in[i] ;
-      gNormals = getNormal() ;
+      //gNormals = getNormal(); --> surface normal
+	  gTeNormal = teNormal[i];
 	  TexCoords = tessTex[i];
       EmitVertex() ;
   }

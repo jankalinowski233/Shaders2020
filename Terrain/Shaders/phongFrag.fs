@@ -1,7 +1,8 @@
 #version 330 core
 out vec4 FragColor;
 
-in vec3 gNormals ;
+in vec3 gTeNormal;
+//in vec3 gNormals ; --> Surface normal
 in vec3 gWorldPos_FS_in ;
 
 struct Material {
@@ -29,7 +30,7 @@ void main()
     vec3 col = vec3(0.6,0.1,0.2) ;
   
      vec3 viewDir = normalize(viewPos - gWorldPos_FS_in);
-	 vec3 norm = normalize(gNormals) ;
+	 vec3 norm = normalize(gTeNormal) ;
 	 vec3 ambient = dirLight.ambient * mat.ambient;     
      vec3 lightDir = normalize(-dirLight.direction);
     // diffuse shading

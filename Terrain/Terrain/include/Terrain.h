@@ -14,6 +14,7 @@ public:
 	Terrain(int widthIn, int heightIn, int stepSizeIn);
 	Terrain();
 	std::vector<float> getVertices();
+	inline int getStepSize() { return stepSize; }
 private:
 	std::vector<float> vertices;
 	int width;

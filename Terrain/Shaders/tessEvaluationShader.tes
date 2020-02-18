@@ -15,16 +15,19 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform sampler2D heightTexture;
 uniform float scale;
+uniform float step;
 
 // read in vector arrays from previous shader
 in vec2 vsTexCoords[];
 in vec3 posTC[] ;
+in float tessLevel[];
 
 // pass along the interpolated values
 //out vec3 normES ;
 out vec3 WorldPos_FS_in ;
 out vec3 fragPos;
 out vec2 tessTex;
+out vec3 teNormal;
 
 void main()
 {
@@ -35,8 +38,18 @@ void main()
    tessTex = interpolate2D(vsTexCoords[0], vsTexCoords[1], vsTexCoords[2]);
 
    float height = (texture(heightTexture, tessTex).x);
-   float right = (textureOffset(heightTexture, tessTex, ivec2(1, 0)).r) * scale;
-   posES.y = height + right;
+   posES.y = height * scale;
+
+   // calculate normals
+   float x = tessLevel[0] / step;
+
+   float right = (textureOffset(heightTexture, tessTex, ivec2(x, 0)).r) * scale;
+   float left = (textureOffset(heightTexture, tessTex, ivec2(-x, 0)).r) * scale;
+   float up = (textureOffset(heightTexture, tessTex, ivec2(0, x)).r) * scale;
+   float down = (textureOffset(heightTexture, tessTex, ivec2(0, -x)).r) * scale;
+
+   vec3 toNormalize = vec3((left-right), 2.0f, (up-down));
+   teNormal = normalize(toNormalize);
 
    // transform vertex to clip space
    gl_Position =  projection * view * model * vec4(posES, 1.0);
