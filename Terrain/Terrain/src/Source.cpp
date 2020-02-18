@@ -22,7 +22,7 @@
 // settings
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 900;
-glm::vec3 dirLightPos(0.1f, 0.6f, 0.2f);
+glm::vec3 dirLightPos(0.0f, 2.0f, 2.0f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -74,7 +74,7 @@ int main()
 	glCullFace(GL_BACK);
 
 	// simple vertex and fragment shader - add your own tess and geo shader
-	Shader shader("..\\shaders\\tessVert.vs", "..\\shaders\\plainFrag.fs", "..\\shaders\\Norms.gs",
+	Shader shader("..\\shaders\\tessVert.vs", "..\\shaders\\phongFrag.fs", "..\\shaders\\Norms.gs",
 		"..\\shaders\\tessControlShader.tcs", "..\\shaders\\tessEvaluationShader.tes");
 
 
@@ -85,9 +85,10 @@ int main()
 	bool wireframeMode = true;
 	bool pressed = false;
 
-	unsigned int heightMap = loadTexture("../resources/heightMap.png");
-
-
+	unsigned int heightMap = loadTexture("../resources/height2.jpg");
+	shader.setInt("heightTexture", heightMap);
+	glBindTexture(GL_TEXTURE_2D, heightMap);
+	glActiveTexture(GL_TEXTURE1);
 	while (!glfwWindowShouldClose(window))
 	{
 
@@ -100,8 +101,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glBindVertexArray(VAO);
-		glBindTexture(GL_TEXTURE_2D, heightMap);
-		glActiveTexture(GL_TEXTURE1);
+
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1200.0f);
 		glm::mat4 view = camera.GetViewMatrix();
@@ -112,21 +112,21 @@ int main()
 		shader.setMat4("view", view);
 		shader.setMat4("model", model);
 
-		shader.setInt("heightTexture", heightMap);
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("eyePos", camera.Position);
-		shader.setFloat("lambda", 0.0105f);
+		shader.setFloat("lambda", 0.0035f);
 		shader.setFloat("alpha", 15.0f);
+		shader.setFloat("scale", 50.0f);
 
 		//light properties
 		shader.setVec3("dirLight.direction", dirLightPos);
-		shader.setVec3("dirLight.ambient", 0.9f, 0.9f, 0.9f);
-		shader.setVec3("dirLight.diffuse", 0.75f, 0.75f, 0.75f);
-		shader.setVec3("dirLight.specular", 0.8f, 0.8f, 0.8f);
+		shader.setVec3("dirLight.ambient", 0.5f, 0.5f, 0.5f);
+		shader.setVec3("dirLight.diffuse", 0.45f, 0.45f, 0.45f);
+		shader.setVec3("dirLight.specular", 0.6f, 0.6f, 0.6f);
 		//material properties
-		shader.setVec3("mat.ambient", 0.5, 0.587, 0.517);
-		shader.setVec3("mat.diffuse", 0.596, 0.941, 0.891);
-		shader.setVec3("mat.specular", 0.497f, 0.508f, 0.506f);
+		shader.setVec3("mat.ambient", 0.5, 0.887, 0.517);
+		shader.setVec3("mat.diffuse", 0.396, 0.741, 0.691);
+		shader.setVec3("mat.specular", 0.297f, 0.808f, 0.306f);
 		shader.setFloat("mat.shininess", 0.9f);
 
 		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && !pressed)
@@ -272,7 +272,6 @@ void setVAO(vector <float> vertices) {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	
-
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }

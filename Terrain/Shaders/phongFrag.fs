@@ -1,10 +1,8 @@
 #version 330 core
 out vec4 FragColor;
 
-
 in vec3 gNormals ;
 in vec3 gWorldPos_FS_in ;
-
 
 struct Material {
     vec3 ambient;
@@ -12,7 +10,6 @@ struct Material {
     vec3 specular;    
     float shininess;
 };                                                                        
-
 
 struct DirLight {
     vec3 direction;

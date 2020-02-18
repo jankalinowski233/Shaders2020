@@ -1,5 +1,5 @@
 ﻿  Source.cpp
-d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(94): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(127): warning C4305: 'argument': truncation from 'double' to 'float'
 d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(128): warning C4305: 'argument': truncation from 'double' to 'float'
 d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(194): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
