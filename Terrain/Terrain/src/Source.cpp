@@ -22,7 +22,7 @@
 // settings
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 900;
-glm::vec3 dirLightPos(0.0f, 3.0f, -5.0f);
+glm::vec3 dirLightPos(10.0f, 1.0f, -10.0f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -115,7 +115,7 @@ int main()
 
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("eyePos", camera.Position);
-		shader.setFloat("lambda", 0.0055f); // Need help tweaking ???
+		shader.setFloat("lambda", 0.0035f); // Need help tweaking ???
 		shader.setFloat("alpha", 55.0f);
 		shader.setFloat("scale", 50.0f);
 		shader.setFloat("step", terrain.getStepSize());
