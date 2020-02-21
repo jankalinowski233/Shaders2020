@@ -91,7 +91,6 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
-
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
@@ -118,7 +117,6 @@ int main()
 		shader.setFloat("lambda", 0.0035f); // Need help tweaking ???
 		shader.setFloat("alpha", 55.0f);
 		shader.setFloat("scale", 50.0f);
-		shader.setFloat("step", terrain.getStepSize());
 
 		//light properties
 		shader.setVec3("dirLight.direction", dirLightPos);
