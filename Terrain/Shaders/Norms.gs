@@ -4,25 +4,28 @@ layout(triangle_strip, max_vertices = 3) out ;
 
 vec3 getNormal() ;
 
-in vec3 WorldPos_FS_in[] ;
+in vec3 fragPos[] ;
 in vec3 teNormal[];
 in vec2 tessTex[];
+in float teScale[];
 
 out vec3 gTeNormal;
-//out vec3 gNormals ; --> Surface normal
+//out vec3 gNormals ; //--> Surface normal
 out vec3 gWorldPos_FS_in ;
 out vec2 TexCoords;
+out float gScale;
 
 void main()
 {
-  
+ 
    for(int i = 0 ; i < 3; i++)
    {
       gl_Position = gl_in[i].gl_Position ;
-      gWorldPos_FS_in = WorldPos_FS_in[i] ;
-      //gNormals = getNormal(); --> surface normal
+      gWorldPos_FS_in = fragPos[i] ;
+      //gNormals = getNormal(); //--> surface normal
 	  TexCoords = tessTex[i];
 	  gTeNormal = teNormal[i];
+	  gScale = teScale[i];
       EmitVertex() ;
   }
      EndPrimitive() ;

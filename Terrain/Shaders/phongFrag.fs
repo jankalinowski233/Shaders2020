@@ -2,8 +2,9 @@
 out vec4 FragColor;
 
 in vec3 gTeNormal;
-//in vec3 gNormals ; --> Surface normal
-in vec3 gWorldPos_FS_in ;
+//in vec3 gNormals ; //--> Surface normal
+in vec3 gWorldPos_FS_in;
+in float gScale;
 
 struct Material {
     vec3 ambient;
@@ -27,6 +28,18 @@ uniform vec3 viewPos ;
 
 void main()
 {       
+    vec3 white = vec3(1.0f, 1.0f, 1.0f);
+
+    vec3 lightGray = vec3(0.82f, 0.82f, 0.82f);
+	vec3 gray = vec3(0.5f, 0.4f, 0.5f);
+    vec3 darkGray = vec3(0.26f, 0.26f, 0.26f);
+
+    vec3 blue = vec3(0.1f, 0.1f, 0.8f);
+    vec3 green = vec3(0.1f, 0.8f, 0.1f);
+    vec3 darkGreen = vec3(0.0f, 0.2f, 0.0f);
+
+	vec3 color = white;
+
     // ambient
     vec3 ambient = dirLight.ambient * mat.ambient;
   	
@@ -44,8 +57,28 @@ void main()
     float spec = pow(max(dot(norm, halfway), 0.0),  mat.shininess); //calculate specular factor
     vec3 specular = dirLight.specular * (spec * mat.specular);
 
-    vec3 result = ambient + diffuse + specular;
-    FragColor = vec4(result, 1.0); //final result --> light + texture
+    float height = gWorldPos_FS_in.y / (gScale * 10.0f);
+
+    if(height > 0.4f)
+	{
+		color = vec3(mix(green, blue, smoothstep(0.3f, 1.0f, height)).rgb);
+	}
+	else if(height > 0.3f)
+	{
+		color = vec3(mix(darkGreen, green, smoothstep(0.2f, 0.5f, height)).rgb);
+	}
+	else if(height > 0.15f)
+	{
+		color = vec3(mix(gray, darkGreen, smoothstep(0.12f, 0.5f, height)).rgb);
+	}	
+	else
+	{
+		color = gray;
+	}
+
+
+    vec3 result = (ambient + diffuse + specular) * color;
+    FragColor = vec4(result, 1.0); //final result
 
 }
 

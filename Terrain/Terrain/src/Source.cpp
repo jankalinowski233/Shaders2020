@@ -82,7 +82,7 @@ int main()
 	Terrain terrain(50, 50, 10);
 	std::vector<float> vertices= terrain.getVertices();
 	setVAO(vertices);
-	bool wireframeMode = true;
+	bool wireframeMode = false;
 	bool pressed = false;
 
 	unsigned int heightMap = loadTexture("../resources/heightMap.png");
@@ -116,17 +116,17 @@ int main()
 		shader.setVec3("eyePos", camera.Position);
 		shader.setFloat("lambda", 0.0035f); // Need help tweaking ???
 		shader.setFloat("alpha", 55.0f);
-		shader.setFloat("scale", 50.0f);
+		shader.setFloat("scale", 100.0f);
 
 		//light properties
 		shader.setVec3("dirLight.direction", dirLightPos);
-		shader.setVec3("dirLight.ambient", 0.4f, 0.7f, 0.4f);
-		shader.setVec3("dirLight.diffuse", 0.35f, 0.55f, 0.35f);
-		shader.setVec3("dirLight.specular", 0.4f, 0.5f, 0.4f);
+		shader.setVec3("dirLight.ambient", 0.9f, 0.9f, 0.9f);
+		shader.setVec3("dirLight.diffuse", 0.85f, 0.85f, 0.85f);
+		shader.setVec3("dirLight.specular", 0.8f, 0.8f, 0.8f);
 		//material properties
-		shader.setVec3("mat.ambient", 0.2, 0.387, 0.217);
-		shader.setVec3("mat.diffuse", 0.196, 0.241, 0.291);
-		shader.setVec3("mat.specular", 0.097f, 0.308f, 0.106f);
+		shader.setVec3("mat.ambient", 0.4f, 0.4f, 0.4f);
+		shader.setVec3("mat.diffuse", 0.2f, 0.2f, 0.2f);
+		shader.setVec3("mat.specular", 0.1f, 0.1f, 0.1f);
 		shader.setFloat("mat.shininess", 0.1f);
 
 		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && !pressed)
