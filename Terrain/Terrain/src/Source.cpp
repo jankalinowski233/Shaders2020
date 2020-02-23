@@ -23,6 +23,7 @@
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 900;
 glm::vec3 dirLightPos(10.0f, 1.0f, -10.0f);
+glm::vec3 backgroundColor(0.8f, 0.8f, 0.8f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -98,12 +99,13 @@ int main()
 		processInput(window);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
 		glBindVertexArray(VAO);
 		glBindTexture(GL_TEXTURE_2D, heightMap);
 		glActiveTexture(GL_TEXTURE1);
 
-		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1200.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 model = glm::mat4(1.0f);
 
@@ -114,7 +116,7 @@ int main()
 
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("eyePos", camera.Position);
-		shader.setFloat("lambda", 0.0035f); // Need help tweaking ???
+		shader.setFloat("lambda", 0.0035f);
 		shader.setFloat("alpha", 55.0f);
 		shader.setFloat("scale", 100.0f);
 
@@ -130,8 +132,8 @@ int main()
 		shader.setFloat("mat.shininess", 0.1f);
 
 		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && !pressed)
-		{
-			wireframeMode = !wireframeMode;
+		{			
+			wireframeMode = !wireframeMode;		
 			pressed = true;
 		}
 		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_RELEASE)
@@ -142,10 +144,12 @@ int main()
 		if (wireframeMode)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			shader.setBool("showFog", false);
 		}
 		else
 		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			shader.setBool("showFog", true);
 		}
 		
 		glDrawArrays(GL_PATCHES, 0, vertices.size() / 3);

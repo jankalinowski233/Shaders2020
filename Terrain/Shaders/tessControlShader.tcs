@@ -14,6 +14,7 @@ in vec2 texCoords[];
 out vec3 posTC[] ;
 out vec2 vsTexCoords[];
 out float tessLevel[];
+out vec3 cameraPos[];
 
 uniform vec3 eyePos;
 uniform float lambda;
@@ -39,6 +40,8 @@ void main()
    float camToVertexDist1 = distance(eyePos, fragPos[1]);
    float camToVertexDist2 = distance(eyePos, fragPos[2]);
    tessLevel[gl_InvocationID] = GetTessellationLevel(camToVertexDist1, camToVertexDist2);
+
+   cameraPos[gl_InvocationID] = eyePos;
 
    // gpu can calculate each control point in parallel
    // tesselation level same for entire patch so only need to set it once (for the first control point)

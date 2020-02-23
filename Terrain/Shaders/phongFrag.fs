@@ -5,6 +5,7 @@ in vec3 gTeNormal;
 //in vec3 gNormals ; //--> Surface normal
 in vec3 gWorldPos_FS_in;
 in float gScale;
+in float gVis;
 
 struct Material {
     vec3 ambient;
@@ -20,11 +21,11 @@ struct DirLight {
     vec3 specular;
 }; 
 
-//uniform sampler2D texture1;
 uniform DirLight dirLight;
 uniform Material mat ;
 uniform vec3 viewPos ;
 
+uniform bool showFog = true;
 
 void main()
 {       
@@ -57,9 +58,9 @@ void main()
     float spec = pow(max(dot(norm, halfway), 0.0),  mat.shininess); //calculate specular factor
     vec3 specular = dirLight.specular * (spec * mat.specular);
 
-    float height = gWorldPos_FS_in.y / (gScale * 10.0f);
+    float height = gWorldPos_FS_in.y / (gScale * 10.0f); // weird calcations???
 
-    if(height > 0.4f)
+	 if(height > 0.4f)
 	{
 		color = vec3(mix(green, blue, smoothstep(0.3f, 1.0f, height)).rgb);
 	}
@@ -76,9 +77,17 @@ void main()
 		color = gray;
 	}
 
+	// TODO triplanar texturing??? https://gamedevelopment.tutsplus.com/articles/use-tri-planar-texture-mapping-for-better-terrain--gamedev-13821
 
     vec3 result = (ambient + diffuse + specular) * color;
-    FragColor = vec4(result, 1.0); //final result
+	if(showFog == true)
+	{
+		FragColor = mix(vec4(0.5f, 0.5f, 0.5f, 1.0f), vec4(result, 1.0), gVis); //final result
+	}   
+	else
+	{
+		FragColor = vec4(result, 1.0f); // wireframe mode - used to clearly see LOD
+	}
 
 }
 

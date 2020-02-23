@@ -20,12 +20,17 @@ uniform float scale;
 in vec2 vsTexCoords[];
 in vec3 posTC[] ;
 in float tessLevel[];
+in vec3 cameraPos[];
 
 // pass along the interpolated values
 out vec3 fragPos;
 out vec2 tessTex;
 out vec3 teNormal;
 out float teScale;
+out float visibility;
+
+float density = 0.002f;
+float G = 5.0f;
 
 void main()
 {
@@ -38,6 +43,10 @@ void main()
    float height = (texture(heightTexture, tessTex).x);
    fragPos.y = height * scale;
    teScale = fragPos.y * height;
+
+   float fogDistance = distance(cameraPos[0], fragPos);
+   visibility = exp(-pow((fogDistance * density), G));
+   visibility = clamp(visibility, 0.0f, 1.0f);
 
    // calculate normals
    // leaving ivec2 at 1, as it looks much better than t/n

@@ -8,12 +8,14 @@ in vec3 fragPos[] ;
 in vec3 teNormal[];
 in vec2 tessTex[];
 in float teScale[];
+in float visibility[];
 
 out vec3 gTeNormal;
 //out vec3 gNormals ; //--> Surface normal
 out vec3 gWorldPos_FS_in ;
 out vec2 TexCoords;
 out float gScale;
+out float gVis;
 
 void main()
 {
@@ -26,6 +28,7 @@ void main()
 	  TexCoords = tessTex[i];
 	  gTeNormal = teNormal[i];
 	  gScale = teScale[i];
+	  gVis = visibility[i];
       EmitVertex() ;
   }
      EndPrimitive() ;
