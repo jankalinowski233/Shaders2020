@@ -37,7 +37,7 @@ void main()
 
     vec3 blue = vec3(0.1f, 0.1f, 0.8f);
     vec3 green = vec3(0.1f, 0.8f, 0.1f);
-    vec3 darkGreen = vec3(0.0f, 0.2f, 0.0f);
+    vec3 darkGreen = vec3(0.1f, 0.6f, 0.1f);
 
 	vec3 color = white;
 
@@ -58,26 +58,20 @@ void main()
     float spec = pow(max(dot(norm, halfway), 0.0),  mat.shininess); //calculate specular factor
     vec3 specular = dirLight.specular * (spec * mat.specular);
 
-    float height = gWorldPos_FS_in.y / (gScale * 10.0f); // weird calcations???
+    float height = gWorldPos_FS_in.y / gScale;
 
-	 if(height > 0.4f)
+	if(height < 0.3f)
 	{
-		color = vec3(mix(green, blue, smoothstep(0.3f, 1.0f, height)).rgb);
+		color = vec3(mix(blue, darkGreen, smoothstep(0.01f, 0.3f, height)).rgb);
 	}
-	else if(height > 0.3f)
+	else if(height < 0.8f)
 	{
-		color = vec3(mix(darkGreen, green, smoothstep(0.2f, 0.5f, height)).rgb);
-	}
-	else if(height > 0.15f)
-	{
-		color = vec3(mix(gray, darkGreen, smoothstep(0.12f, 0.5f, height)).rgb);
+		color = vec3(mix(darkGreen, gray, smoothstep(0.5f, 0.6f, height)).rgb);
 	}	
 	else
 	{
 		color = gray;
 	}
-
-	// TODO triplanar texturing??? https://gamedevelopment.tutsplus.com/articles/use-tri-planar-texture-mapping-for-better-terrain--gamedev-13821
 
     vec3 result = (ambient + diffuse + specular) * color;
 	if(showFog == true)

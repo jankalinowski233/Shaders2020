@@ -42,7 +42,7 @@ void main()
 
    float height = (texture(heightTexture, tessTex).x);
    fragPos.y = height * scale;
-   teScale = fragPos.y * height;
+   teScale = scale;
 
    float fogDistance = distance(cameraPos[0], fragPos);
    visibility = exp(-pow((fogDistance * density), G));
