@@ -8,7 +8,6 @@ Terrain::Terrain(int widthIn, int heightIn, int stepSizeIn)
 	height = heightIn;
 	stepSize = stepSizeIn;
 	makeVertices(&vertices);
-
 }
 
 Terrain::Terrain() {
@@ -70,7 +69,7 @@ void Terrain::makeVertex(int x, int y, std::vector<float> *vertices) {
 
 	//x y z position
 	vertices->push_back((float)x); //xPos
-	vertices->push_back(0.0f); //yPos - always 0 for now. Going to calculate this on GPU - can change to calclaue it here.
+	vertices->push_back((float)0.0f); //yPos - always 0 for now. Going to calculate this on GPU - can change to calclaue it here.
 	vertices->push_back((float)y); //zPos
 
 	// add texture coords

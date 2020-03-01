@@ -2,7 +2,7 @@
 out vec4 FragColor;
 
 in vec3 gTeNormal;
-//in vec3 gNormals ; //--> Surface normal
+in vec3 gNormals ; //--> Surface normal
 in vec3 gWorldPos_FS_in;
 in float gScale;
 in float gVis;
@@ -45,7 +45,8 @@ void main()
     vec3 ambient = dirLight.ambient * mat.ambient;
   	
     // diffuse 
-    vec3 norm = normalize(gTeNormal); //normalize vertices' normals length
+    //vec3 norm = normalize(gTeNormal); //normalize vertices' normals length (VERTEX NORMALS)
+    vec3 norm = normalize(gNormals); //normalize vertices' normals length (SURFACE NORMALS)
     vec3 lightDir = normalize(dirLight.direction - gWorldPos_FS_in); //calculate light pos
 
     float diff = max(dot(lightDir, norm), 0.0f); //calculate diffuse factor
