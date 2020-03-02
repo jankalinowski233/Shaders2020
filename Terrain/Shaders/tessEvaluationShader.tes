@@ -15,6 +15,7 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform sampler2D heightTexture;
 uniform float scale;
+uniform float seed;
 
 // read in vector arrays from previous shader
 in vec2 vsTexCoords[];
@@ -29,12 +30,12 @@ out vec3 teNormal;
 out float teScale;
 out float visibility;
 
-float density = 0.002f;
-float G = 5.0f;
+float density = 0.007f;
+float G = 3.0f;
 
 float hash(float n)
 {
-	return fract(sin(n) * 115.3843f);
+	return fract(sin(n) * (775.3843f + seed));
 }
 
 float perlinNoise(float x, float y, float z)
@@ -92,10 +93,10 @@ void main()
 
    // calculate normals
    // leaving ivec2 at 1, as it looks much better than t/n
-   float right = textureOffset(heightTexture, tessTex, ivec2(1, 0)).r * scale;
-   float left = textureOffset(heightTexture, tessTex, ivec2(-1, 0)).r * scale;
-   float up = textureOffset(heightTexture, tessTex, ivec2(0, 1)).r * scale;
-   float down = textureOffset(heightTexture, tessTex, ivec2(0, -1)).r * scale;
+   float right = octaves(vec3(fragPos.x + 1.0f, fragPos.y, fragPos.z), 8) * scale;
+   float left = octaves(vec3(fragPos.x - 1.0f, fragPos.y, fragPos.z), 8) * scale;
+   float up = octaves(vec3(fragPos.x, fragPos.y, fragPos.z + 1.0f), 8) * scale;
+   float down = octaves(vec3(fragPos.x, fragPos.y, fragPos.z - 1.0f), 8) * scale;
 
    vec3 toNormalize = vec3((left-right), 2.0f, (up-down));
    teNormal = normalize(toNormalize);

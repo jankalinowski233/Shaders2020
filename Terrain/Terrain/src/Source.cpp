@@ -16,13 +16,13 @@
 #include <string>
 #include <iostream>
 #include <numeric>
-
+#include <time.h>
 
 
 // settings
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 900;
-glm::vec3 dirLightPos(10.0f, 1.0f, -10.0f);
+glm::vec3 dirLightPos(0.1f, -1.0f, 0.1f);
 glm::vec3 backgroundColor(0.8f, 0.8f, 0.8f);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -32,9 +32,10 @@ void processInput(GLFWwindow *window);
 unsigned int loadTexture(char const * path);
 //unsigned int loadTexture2(char const * path);
 void setVAO(vector <float> vertices);
+void updateVBO(vector<float> vertices);
 
 // camera
-Camera camera(glm::vec3(260,50,300));
+Camera camera(glm::vec3(250, 125, 250));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -81,14 +82,20 @@ int main()
 
 	//Terrain Constructor ; number of grids in width, number of grids in height, gridSize
 	Terrain terrain(50, 50, 10);
-	std::vector<float> vertices= terrain.getVertices();
+	std::vector<float> vertices = terrain.getVertices();
 	setVAO(vertices);
 	bool wireframeMode = false;
 	bool pressed = false;
+	bool generated = false;
 
 	unsigned int heightMap = loadTexture("../resources/heightMap.png");
 	shader.use();
 	shader.setInt("heightTexture", heightMap);
+
+	float randSeed = 0.0f;
+	srand(time(NULL));
+	randSeed = rand();
+	shader.setFloat("seed", randSeed);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -117,7 +124,7 @@ int main()
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("eyePos", camera.Position);
 		shader.setFloat("lambda", 0.0035f);
-		shader.setFloat("alpha", 55.0f);
+		shader.setFloat("alpha", 15.0f);
 		shader.setFloat("scale", 100.0f);
 
 		//light properties
@@ -130,6 +137,18 @@ int main()
 		shader.setVec3("mat.diffuse", 0.2f, 0.2f, 0.2f);
 		shader.setVec3("mat.specular", 0.1f, 0.1f, 0.1f);
 		shader.setFloat("mat.shininess", 0.1f);
+
+		if (terrain.checkBounds(camera.Position.x, camera.Position.z, 10.0f) == true && generated == false)
+		{
+			generated = true;
+			terrain.makeVertices(&terrain.getVertices(), camera.Position.x - 250.0f, camera.Position.z - 250.0f);
+			vertices = terrain.getVertices();
+			updateVBO(vertices);
+		}
+		if (generated == true)
+		{
+			generated = false;
+		}
 
 		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && !pressed)
 		{			
@@ -266,7 +285,7 @@ void setVAO(vector <float> vertices) {
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);		
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, (vertices.size() * sizeof(GLfloat)), vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (vertices.size() * sizeof(GLfloat)), vertices.data(), GL_DYNAMIC_DRAW); // make it dynamic draw for updates
 
 	//xyz
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -278,6 +297,13 @@ void setVAO(vector <float> vertices) {
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+}
+
+void updateVBO(vector<float> vertices)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, (vertices.size() * sizeof(GLfloat)), vertices.data(), GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 
