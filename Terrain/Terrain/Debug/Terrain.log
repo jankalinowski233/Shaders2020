@@ -1,8 +1,12 @@
-﻿  Terrain.cpp
-d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\terrain.cpp(60): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\terrain.cpp(61): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\terrain.cpp(62): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\terrain.cpp(63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\terrain.cpp(64): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\terrain.cpp(65): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+﻿  Source.cpp
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(96): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(97): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(102): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(217): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(218): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(222): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(223): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(225): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(226): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\university\studies\3rd year\shaders2020\terrain assignment\shaders2020\terrain\terrain\src\source.cpp(239): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Terrain.vcxproj -> D:\University\Studies\3rd Year\Shaders2020\Terrain assignment\Shaders2020\Terrain\Debug\Terrain.exe

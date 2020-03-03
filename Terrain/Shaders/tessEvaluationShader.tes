@@ -30,12 +30,12 @@ out vec3 teNormal;
 out float teScale;
 out float visibility;
 
-float density = 0.007f;
-float G = 3.0f;
+float density = 0.006f;
+float G = 5.0f;
 
 float hash(float n)
 {
-	return fract(sin(n) * (775.3843f + seed));
+	return fract(sin(n) * (753.3843f + seed));
 }
 
 float perlinNoise(float x, float y, float z)
@@ -64,7 +64,7 @@ float octaves(vec3 pos, int count)
 	{
 		float x = pos.x * frequency;
 		float z = pos.z * frequency;
-		total += perlinNoise(x, 0.001f, z) * amplitude;
+		total += perlinNoise(x, 0.1f, z) * amplitude;
 		maxAmplitude += amplitude;
 
 		frequency *= 2.0f;
@@ -84,7 +84,7 @@ void main()
    //fragPos.y = height * scale;
 
    // Perlin noise height
-   fragPos.y = octaves(fragPos, 8) * scale;
+   fragPos.y = octaves(fragPos, 15) * scale;
    teScale = scale;
 
    float fogDistance = distance(cameraPos[0], fragPos);

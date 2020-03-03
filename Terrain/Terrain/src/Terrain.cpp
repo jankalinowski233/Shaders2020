@@ -81,10 +81,13 @@ void Terrain::makeVertex(int x, int y, std::vector<float> *vertices) {
 
 bool Terrain::checkBounds(float x, float y, float distance)
 {
-	if (x > (width * stepSize) - distance)
+	float xPos = vertices.at(vertices.size() / 2); // get X position of middle vertex
+	float yPos = vertices.at((vertices.size() / 2) + 2); // get Z position of middle vertex
+
+	if (x > (xPos + distance) || (x < xPos - distance))
 		return true;
 
-	if (y > (height * stepSize) - distance)
+	if (y > (yPos + distance) || y < (yPos - distance))
 		return true;
 
 	return false;

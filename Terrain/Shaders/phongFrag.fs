@@ -61,13 +61,13 @@ void main()
 
     float height = gWorldPos_FS_in.y / gScale;
 
-	if(height < 0.3f)
+	if(height < 0.5f)
 	{
-		color = vec3(mix(blue, darkGreen, smoothstep(0.01f, 0.3f, height)).rgb);
+		color = vec3(mix(blue, darkGreen, smoothstep(0.01f, 0.5f, height)).rgb);
 	}
 	else if(height < 0.8f)
 	{
-		color = vec3(mix(darkGreen, gray, smoothstep(0.5f, 0.6f, height)).rgb);
+		color = vec3(mix(darkGreen, gray, smoothstep(0.55f, 0.8f, height)).rgb);
 	}	
 	else
 	{

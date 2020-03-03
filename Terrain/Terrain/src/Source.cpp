@@ -124,8 +124,8 @@ int main()
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("eyePos", camera.Position);
 		shader.setFloat("lambda", 0.0035f);
-		shader.setFloat("alpha", 15.0f);
-		shader.setFloat("scale", 100.0f);
+		shader.setFloat("alpha", 35.0f);
+		shader.setFloat("scale", 125.0f);
 
 		//light properties
 		shader.setVec3("dirLight.direction", dirLightPos);
@@ -138,7 +138,7 @@ int main()
 		shader.setVec3("mat.specular", 0.1f, 0.1f, 0.1f);
 		shader.setFloat("mat.shininess", 0.1f);
 
-		if (terrain.checkBounds(camera.Position.x, camera.Position.z, 10.0f) == true && generated == false)
+		if (terrain.checkBounds(camera.Position.x, camera.Position.z, 25.0f) == true && generated == false)
 		{
 			generated = true;
 			terrain.makeVertices(&terrain.getVertices(), camera.Position.x - 250.0f, camera.Position.z - 250.0f);
