@@ -22,6 +22,7 @@ in vec2 vsTexCoords[];
 in vec3 posTC[] ;
 in float tessLevel[];
 in vec3 cameraPos[];
+in vec4 lightPosTC[];
 
 // pass along the interpolated values
 out vec3 fragPos;
@@ -29,6 +30,7 @@ out vec2 tessTex;
 out vec3 teNormal;
 out float teScale;
 out float visibility;
+out vec4 lightPosTE;
 
 float density = 0.006f;
 float G = 5.0f;
@@ -78,10 +80,8 @@ void main()
 {
    fragPos = interpolate3D(posTC[0], posTC[1], posTC[2]) ;
    tessTex = interpolate2D(vsTexCoords[0], vsTexCoords[1], vsTexCoords[2]);
-
-   // Texture height
-   //float height = (texture(heightTexture, tessTex).x);
-   //fragPos.y = height * scale;
+   vec3 interp = interpolate3D(vec3(lightPosTC[0].xyz), vec3(lightPosTC[1].xyz), vec3(lightPosTC[2].xyz));
+   lightPosTE = vec4(interp, 1.0f);
 
    // Perlin noise height
    fragPos.y = octaves(fragPos, 15) * scale;

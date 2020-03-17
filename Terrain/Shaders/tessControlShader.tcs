@@ -10,11 +10,13 @@ layout (vertices =3) out;
 
 in vec3 fragPos[] ;
 in vec2 texCoords[];
+in vec4 lightPosVS[];
 
 out vec3 posTC[] ;
 out vec2 vsTexCoords[];
 out float tessLevel[];
 out vec3 cameraPos[];
+out vec4 lightPosTC[];
 
 uniform vec3 eyePos;
 uniform float lambda;
@@ -58,6 +60,6 @@ void main()
    // pass through position and tex coord information
    posTC[gl_InvocationID]  = fragPos[gl_InvocationID] ;
    vsTexCoords[gl_InvocationID] = texCoords[gl_InvocationID];
-
+   lightPosTC[gl_InvocationID] = lightPosVS[gl_InvocationID];
 	
 }

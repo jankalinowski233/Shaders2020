@@ -6,6 +6,7 @@ in vec3 gNormals ; //--> Surface normal
 in vec3 gWorldPos_FS_in;
 in float gScale;
 in float gVis;
+in vec4 gLightPos;
 
 struct Material {
     vec3 ambient;
@@ -25,7 +26,50 @@ uniform DirLight dirLight;
 uniform Material mat ;
 uniform vec3 viewPos ;
 
+uniform sampler2D shadowMap;
 uniform bool showFog = true;
+
+float calcShadow(vec4 fragPosLightSpace)  //incomplete
+{
+    float shadow = 0.0f ; 
+
+    // perform perspective divide values in range [-1,1]
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+
+    // sample from shadow map
+	float closestDepth = texture(shadowMap, projCoords.xy).r;
+
+    // get depth of current fragment from light's perspective
+	float currentDepth = projCoords.z;
+
+    // check whether current frag pos is in shadow
+	float bias = 0.015;
+	if(currentDepth - bias > closestDepth)
+		shadow = 1.0f;
+
+	vec2 texelSize = 1.0f / textureSize(shadowMap, 0);
+
+	for(int i = -1; i < 2; i++)
+	{
+		for(int j = -1; j < 2; j++)
+		{
+			float pcf = texture(shadowMap, projCoords.xy + vec2(i, j) * texelSize).r;
+
+			if(currentDepth - bias > pcf)
+				shadow += 1;
+		}
+	}
+
+	shadow = shadow / 9.0f;
+
+	if(projCoords.z > 1.0f)
+		shadow = 0.0f;
+
+    return shadow;
+}
 
 void main()
 {       
@@ -74,7 +118,11 @@ void main()
 		color = gray;
 	}
 
-    vec3 result = (ambient + diffuse + specular) * color;
+	float shadow = calcShadow(gLightPos);
+
+    //vec3 result = (ambient + diffuse + specular) * color;
+    vec3 result = (ambient + (1.0f - shadow) * (diffuse + specular)) * color;
+
 	if(showFog == true)
 	{
 		FragColor = mix(vec4(0.5f, 0.5f, 0.5f, 1.0f), vec4(result, 1.0), gVis); //final result

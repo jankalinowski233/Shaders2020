@@ -9,6 +9,7 @@ in vec3 teNormal[];
 in vec2 tessTex[];
 in float teScale[];
 in float visibility[];
+in vec4 lightPosTE[];
 
 out vec3 gTeNormal;
 //out vec3 gNormals ; //--> Surface normal
@@ -16,6 +17,7 @@ out vec3 gWorldPos_FS_in ;
 out vec2 TexCoords;
 out float gScale;
 out float gVis;
+out vec4 gLightPos;
 
 void main()
 {
@@ -29,6 +31,7 @@ void main()
 	  gTeNormal = teNormal[i];
 	  gScale = teScale[i];
 	  gVis = visibility[i];
+	  gLightPos = lightPosTE[i];
       EmitVertex() ;
   }
      EndPrimitive() ;
