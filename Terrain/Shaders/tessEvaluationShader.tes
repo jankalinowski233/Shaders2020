@@ -8,6 +8,7 @@ layout(triangles, equal_spacing, ccw) in;
 // forward declare functions to perfrom interpolation with the barycentric coordinates from the Primitive Generator
 vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2) ;
 vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2) ;
+vec4 interpolate4D(vec4 v0, vec4 v1, vec4 v2) ;
 
 // unifrom matrices to perform transformations
 uniform mat4 model;
@@ -22,15 +23,13 @@ in vec2 vsTexCoords[];
 in vec3 posTC[] ;
 in float tessLevel[];
 in vec3 cameraPos[];
-in vec4 lightPosTC[];
 
 // pass along the interpolated values
-out vec3 fragPos;
+out vec3 fragPosTE;
 out vec2 tessTex;
 out vec3 teNormal;
 out float teScale;
 out float visibility;
-out vec4 lightPosTE;
 
 float density = 0.006f;
 float G = 5.0f;
@@ -40,7 +39,7 @@ float hash(float n)
 	return fract(sin(n) * (753.3843f + seed));
 }
 
-float perlinNoise(float x, float y, float z)
+float sNoise(float x, float y, float z)
 {
 	vec3 p = floor(vec3(x, y, z));
 	vec3 f = fract(vec3(x, y, z));
@@ -66,7 +65,7 @@ float octaves(vec3 pos, int count)
 	{
 		float x = pos.x * frequency;
 		float z = pos.z * frequency;
-		total += perlinNoise(x, 0.1f, z) * amplitude;
+		total += sNoise(x, 0.1f, z) * amplitude;
 		maxAmplitude += amplitude;
 
 		frequency *= 2.0f;
@@ -78,31 +77,29 @@ float octaves(vec3 pos, int count)
 
 void main()
 {
-   fragPos = interpolate3D(posTC[0], posTC[1], posTC[2]) ;
+   fragPosTE = interpolate3D(posTC[0], posTC[1], posTC[2]) ;
    tessTex = interpolate2D(vsTexCoords[0], vsTexCoords[1], vsTexCoords[2]);
-   vec3 interp = interpolate3D(vec3(lightPosTC[0].xyz), vec3(lightPosTC[1].xyz), vec3(lightPosTC[2].xyz));
-   lightPosTE = vec4(interp, 1.0f);
 
-   // Perlin noise height
-   fragPos.y = octaves(fragPos, 15) * scale;
+   // sNoise noise height
+   fragPosTE.y = octaves(fragPosTE, 15) * scale;
    teScale = scale;
 
-   float fogDistance = distance(cameraPos[0], fragPos);
+   float fogDistance = distance(cameraPos[0], fragPosTE);
    visibility = exp(-pow((fogDistance * density), G));
    visibility = clamp(visibility, 0.0f, 1.0f);
 
    // calculate normals
    // leaving ivec2 at 1, as it looks much better than t/n
-   float right = octaves(vec3(fragPos.x + 1.0f, fragPos.y, fragPos.z), 8) * scale;
-   float left = octaves(vec3(fragPos.x - 1.0f, fragPos.y, fragPos.z), 8) * scale;
-   float up = octaves(vec3(fragPos.x, fragPos.y, fragPos.z + 1.0f), 8) * scale;
-   float down = octaves(vec3(fragPos.x, fragPos.y, fragPos.z - 1.0f), 8) * scale;
+   float right = octaves(vec3(fragPosTE.x + 1.0f, fragPosTE.y, fragPosTE.z), 8) * scale;
+   float left = octaves(vec3(fragPosTE.x - 1.0f, fragPosTE.y, fragPosTE.z), 8) * scale;
+   float up = octaves(vec3(fragPosTE.x, fragPosTE.y, fragPosTE.z + 1.0f), 8) * scale;
+   float down = octaves(vec3(fragPosTE.x, fragPosTE.y, fragPosTE.z - 1.0f), 8) * scale;
 
    vec3 toNormalize = vec3((left-right), 2.0f, (up-down));
    teNormal = normalize(toNormalize);
 
    // transform vertex to clip space
-   gl_Position =  projection * view * model * vec4(fragPos, 1.0);
+   gl_Position =  projection * view * model * vec4(fragPosTE, 1.0);
 } 
 
 
@@ -115,5 +112,10 @@ vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2)
 vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2)
 {
    	return vec3(gl_TessCoord.x) * v0 + vec3(gl_TessCoord.y) * v1 + vec3(gl_TessCoord.z) * v2;
+}
+
+vec4 interpolate4D(vec4 v0, vec4 v1, vec4 v2)
+{
+	return vec4(gl_TessCoord.x) * v0 + vec4(gl_TessCoord.y) * v1 + vec4(gl_TessCoord.z) * v2;
 }
 

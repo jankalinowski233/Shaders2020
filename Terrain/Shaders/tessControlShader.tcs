@@ -1,22 +1,13 @@
-// first step of tesselation shader
-// tesselation control shader add/deletes control points and determines the tesselatation level
-// patch has three control points here (three vertices for each triangle)
-
 #version 450 core
 layout (vertices =3) out;
 
-// vectors stored as arrays - each patch has three vertices, each with an xyz pos and xyz norm value 
-//fragPos = position from Vertex Shader, posTC = position from this Tesselation Control shader
-
 in vec3 fragPos[] ;
 in vec2 texCoords[];
-in vec4 lightPosVS[];
 
 out vec3 posTC[] ;
 out vec2 vsTexCoords[];
 out float tessLevel[];
 out vec3 cameraPos[];
-out vec4 lightPosTC[];
 
 uniform vec3 eyePos;
 uniform float lambda;
@@ -60,6 +51,5 @@ void main()
    // pass through position and tex coord information
    posTC[gl_InvocationID]  = fragPos[gl_InvocationID] ;
    vsTexCoords[gl_InvocationID] = texCoords[gl_InvocationID];
-   lightPosTC[gl_InvocationID] = lightPosVS[gl_InvocationID];
 	
 }
